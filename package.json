@@ -1,0 +1,8 @@
+{
+  "name": "graphql-subscription",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/dulyakit/graphql-subscription.git",
+  "author": "Dulyakit <dulyakit@thinknet.co.th>",
+  "license": "MIT"
+}
