@@ -4,5 +4,13 @@
   "main": "index.js",
   "repository": "https://github.com/dulyakit/graphql-subscription.git",
   "author": "Dulyakit <dulyakit@thinknet.co.th>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@apollo/client": "3.9.5",
+    "apollo-server-express": "3.13.0",
+    "express": "4.18.2",
+    "graphql": "16.8.1",
+    "nodemon": "3.1.0",
+    "subscriptions-transport-ws": "0.11.0"
+  }
 }
