@@ -3,7 +3,15 @@ import React from 'react';
 import { Layout,  theme } from 'antd';
 const { Content } = Layout;
 
-function Chat({ params }) {
+interface Props {
+  params: Params;
+}
+
+interface Params {
+  userID: string;
+}
+
+function Chat({ params }: Props) {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();

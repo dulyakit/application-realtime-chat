@@ -1,19 +1,16 @@
 import React, { useContext } from 'react';
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 import { ThemeContext } from '@/app/layout';
-import {
-  UserOutlined,
-  HomeOutlined,
-} from '@ant-design/icons';
+import { UserOutlined, HomeOutlined } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 const SideBar = Layout.Sider;
 
 const Sider = () => {
-  const router = useRouter()
+  const router = useRouter();
 
   const { collapsed } = useContext(ThemeContext);
-  const onClick = (id) => {
-    router.push(`/chat/${id}`, { scroll: false })
+  const onClick = (id: Number) => {
+    router.push(`/chat/${id}`, { scroll: false });
   };
   return (
     <SideBar trigger={null} collapsible collapsed={collapsed}>
