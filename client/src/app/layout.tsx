@@ -1,35 +1,30 @@
 'use client';
 
-import '@/app/globals.css'
-import React, { createContext, useState } from 'react';
+import '@/app/globals.css';
+import React from 'react';
 import { Inter } from 'next/font/google';
-import { Layout as Layouts } from 'antd';
+import { Layout as AntdLayout } from 'antd';
 import Sider from '@/components/layout/sider';
 import Header from '@/components/layout/header';
-
-export const ThemeContext = createContext<any>(null);
+import { ThemeProvider } from './themeContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
-  const [collapsed, setCollapsed] = useState(false);
-
+const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <ThemeContext.Provider value={{ collapsed, setCollapsed }}>
+    <ThemeProvider>
       <html lang="th">
         <body className={inter.className}>
-          <Layouts>
-            <Sider />
-            <Layouts>
+          <AntdLayout  style={{minHeight: '100vh'}}>
+            {/* <Sider /> */}
+            <AntdLayout>
               <Header />
-              <div style={{minHeight: '96vh'}}>
               {children}
-              </div>
-            </Layouts>
-          </Layouts>
+            </AntdLayout>
+          </AntdLayout>
         </body>
       </html>
-    </ThemeContext.Provider>
+    </ThemeProvider>
   );
 };
 

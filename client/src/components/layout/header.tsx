@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { ThemeContext } from '@/app/layout';
+import { ThemeContext } from '@/app/themeContext';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { Layout, Button, theme } from 'antd';
 const Head = Layout.Header;
@@ -16,7 +16,7 @@ function Header() {
         background: colorBgContainer,
       }}
     >
-      <Button
+      {/* <Button
         type="text"
         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         onClick={() => setCollapsed(!collapsed)}
@@ -25,7 +25,7 @@ function Header() {
           width: 64,
           height: 64,
         }}
-      />
+      /> */}
     </Head>
   );
 }
