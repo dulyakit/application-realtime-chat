@@ -1,12 +1,15 @@
 import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
-import { Message } from './schema/message';
+import { Message } from './models/message';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+const DATABASE_URL = process.env.DATABASE_URL || '';
 
-const database = "mongodb+srv://dulyakit:dulyakit@cluster0.vjveoy1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-mongoose.connect(database)
+mongoose.connect(DATABASE_URL)
   .then(() => {
     console.log('Connected to MongoDB');
   })
@@ -27,12 +30,12 @@ app.get('/messages', async (req: Request, res: Response) => {
 });
 
 app.post('/messages', async (req: Request, res: Response) => {
-  const { text, sender } = req.body;
-  if (!text || !sender) {
-    return res.status(400).json({ message: 'Text and sender are required' });
+  const { text, sender, receiver } = req.body;
+  if (!text || !sender || !receiver) {
+    return res.status(422).json({ message: 'Text and sender and receiver are required' });
   }
 
-  const message = new Message({ text, sender });
+  const message = new Message({ text, sender, receiver });
 
   try {
     const newMessage = await message.save();

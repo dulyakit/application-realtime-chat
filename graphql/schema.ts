@@ -1,13 +1,16 @@
 import { PubSub } from 'graphql-subscriptions';
 import gql from 'graphql-tag';
 import { makeExecutableSchema } from '@graphql-tools/schema';
+import axios from 'axios';
 
+const URL_SERVICE = 'http://localhost:8080';
 const pubsub = new PubSub();
 
 const typeDefs = gql`
-  type NewsEvent {
-    title: String
-    description: String
+  type NewsMessage {
+    text: String
+    sender: String
+    receiver: String
   }
 
   type Query {
@@ -15,15 +18,15 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createNewsEvent(title: String, description: String): NewsEvent
+    newMessage(text: String, sender: String, receiver: String): NewsMessage
   }
 
   type Subscription {
-    newsFeed: NewsEvent
+    newsFeed: NewsMessage
   }
 `;
 
-interface createNewsEventInput {
+interface newMessageInput {
   title: string;
   description: string;
 }
@@ -35,10 +38,11 @@ const resolvers = {
     },
   },
   Mutation: {
-    createNewsEvent: (_parent: any, args: createNewsEventInput) => {
-      console.log(args);
-      
-      pubsub.publish('EVENT_CREATED', { newsFeed: args });
+    newMessage: async (_parent: any, args: newMessageInput) => {
+      const { data } = await axios.post(`${URL_SERVICE}/messages`, args);
+      console.log(data);
+
+      pubsub.publish('EVENT_CREATED', { newsFeed: data });
 
       // Save news events to a database: you can do that here!
 

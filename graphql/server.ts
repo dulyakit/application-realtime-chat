@@ -9,9 +9,6 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import schema from './schema';
 
-// Asnychronous Anonymous Function
-// Inside of server.ts -> await keyword
-
 ( async function () {
     // Server code in here!
     const app = express();
