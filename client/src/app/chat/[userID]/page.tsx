@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { Layout, Col, Row, Cascader, Button, Input, Select, Space } from 'antd';
+import { useMutation, useLazyQuery, gql } from '@apollo/client';
+import { Layout, Col, Row, Cascader, Input } from 'antd';
 import userData from '@/constants/userData.json';
 import styles from '@/styles/Home.module.css';
 
@@ -21,11 +21,25 @@ interface Option {
   children?: Option[];
 }
 
+const queryGetMessage = gql`
+  query ($sender: Int!, $receiver: Int!) {
+    getMessage(sender: $sender, receiver: $receiver) {
+      data {
+        receiver
+        sender
+        text
+      }
+    }
+  }
+`;
+
 const Chat: React.FC<Props> = ({ params }) => {
   const userRole = userData.find((e) => e.id === parseInt(params?.userID));
   const userOption = userData.filter((e) => e.id !== userRole?.id);
 
   const [receiver, setReceiver] = useState(0);
+  const [message, setMessage] = useState([]);
+  const [getMessageData] = useLazyQuery(queryGetMessage);
 
   const options: Option[] = userOption.map((item) => ({
     label: item.name,
@@ -41,9 +55,32 @@ const Chat: React.FC<Props> = ({ params }) => {
     }
   };
 
-  // useEffect(() => {
+  const getMessage = () => {
+    if (receiver !== 0) {
+      getMessageData({
+        variables: {
+          sender: userRole?.id,
+          receiver: receiver,
+        },
+        fetchPolicy: 'network-only',
+        nextFetchPolicy: 'network-only',
+      })
+        .then((res) => {
+          const result = res?.data?.getMessage?.data;
+          setMessage(result);
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log('err1: ', err);
+        });
+    }
+  };
 
-  // }, []);
+  useEffect(() => {
+    console.log('useEffect');
+
+    getMessage();
+  }, [receiver]);
   return (
     <center>
       <Content className={styles.container}>
@@ -77,7 +114,11 @@ const Chat: React.FC<Props> = ({ params }) => {
           </div>
         ) : (
           <div className={styles.boxMessage}>
-            <div className={styles.contentMessage}>asdasd asdasdasda</div>
+            {message.map((items: { text: string, sender: Number, receiver: Number }, idx: number) => (
+              <div key={idx} className={items.sender === userRole?.id ? styles.contentMessageSend : styles.contentMessageReceiver}>
+                {items.text}
+              </div>
+            ))}
           </div>
         )}
       </Content>

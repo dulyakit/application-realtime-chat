@@ -6,7 +6,7 @@ import { ApolloProvider } from '@apollo/client/react';
 import { Inter } from 'next/font/google';
 import { Layout as AntdLayout } from 'antd';
 import Header from '@/components/layout/header';
-import client from '@/configs/initApollo'
+import client from '@/lib/initApollo'
 
 
 const inter = Inter({ subsets: ['latin'] });

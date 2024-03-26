@@ -254,9 +254,16 @@
   border-radius: 0px 0px 20px 20px;
 }
 
-.contentMessage {
+.contentMessageSend {
   padding-top: 10px;
   width: 100%;
+  text-align: right;
+}
+
+.contentMessageReceiver {
+  padding-top: 10px;
+  width: 100%;
+  text-align: left;
 }
 
 .contentNotChoose {

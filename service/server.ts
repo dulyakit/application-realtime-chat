@@ -40,7 +40,7 @@ app.post('/messages', async (req: Request, res: Response) => {
   try {
     const newMessage = await message.save();
     
-    const messages = await Message.find({ sender, receiver }).sort({ createdAt: 'desc' });
+    const messages = await Message.find({ $or:[ { sender, receiver }, {sender: receiver, receiver: sender } ]}).sort({ createdAt: 'desc' });
 
     res.status(201).json(messages);
   } catch (error) {
@@ -55,7 +55,7 @@ app.post('/chat', async (req: Request, res: Response) => {
   }
 
   try {
-    const messages = await Message.find({ sender, receiver }).sort({ createdAt: 'desc' });
+    const messages = await Message.find({ $or:[ { sender, receiver }, {sender: receiver, receiver: sender } ]}).sort({ createdAt: 'desc' });
     console.log(messages);
     
     res.json(messages);
