@@ -39,7 +39,26 @@ app.post('/messages', async (req: Request, res: Response) => {
 
   try {
     const newMessage = await message.save();
-    res.status(201).json(newMessage);
+    
+    const messages = await Message.find({ sender, receiver }).sort({ createdAt: 'desc' });
+
+    res.status(201).json(messages);
+  } catch (error) {
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.post('/chat', async (req: Request, res: Response) => {
+  const { sender, receiver } = req.body;
+  if (!sender || !receiver) {
+    return res.status(422).json({ message: 'Text and sender and receiver are required' });
+  }
+
+  try {
+    const messages = await Message.find({ sender, receiver }).sort({ createdAt: 'desc' });
+    console.log(messages);
+    
+    res.json(messages);
   } catch (error) {
     res.status(500).json({ message: (error as Error).message });
   }

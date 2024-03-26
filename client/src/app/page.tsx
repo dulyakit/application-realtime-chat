@@ -1,25 +1,30 @@
 'use client';
+import { useRouter, useSearchParams } from 'next/navigation';
+import styled from 'styled-components';
 import { Layout, theme } from 'antd';
 import { DownloadOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Divider, Flex, Avatar, Badge } from 'antd';
+import { Button, Divider, Flex, Avatar, Badge, Card } from 'antd';
+import userData from '@/constants/userData.json'
 
 const { Content } = Layout;
 
-const Home = (props) => {
+const Home = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const userData = [
-    {
-      name: 'สมหวัง',
-      id: 1,
-    },
-    {
-      name: 'สมหมาย',
-      id: 2,
-    },
-  ];
+  const router = useRouter();
+
+  const onClick = (id: Number) => {
+    router.push(`/chat/${id}`, { scroll: false });
+  };
+
+  const CardRole = styled(Card)`
+    &:hover {
+      cursor: pointer;
+      background-color: lightgray;
+    }
+  `;
 
   return (
     <center>
@@ -33,22 +38,22 @@ const Home = (props) => {
           borderRadius: borderRadiusLG,
         }}
       >
+        <h2 style={{ marginBottom: '20px' }}>โปรดเลือก Role</h2>
         <Flex gap="small" wrap="wrap">
           {userData.map((user) => (
-            <Button
+            <CardRole
               key={user.id}
-              type="primary"
-              icon={
-                <Badge count={1}>
-                  <Avatar shape="square" icon={<UserOutlined />} />
-                </Badge>
-              }
-              size="large"
-              style={{ margin: '5px', width: '100vw', textAlign: 'left' }}
-              ghost
+              bordered={false}
+              style={{ width: '100vw', textAlign: 'left' }}
+              onClick={() => onClick(user.id)}
             >
-              <span>{user.name}</span>
-            </Button>
+              {/* <Badge count={1}> */}
+              <h3>
+                <Avatar shape="square" icon={<UserOutlined />} />
+                <span style={{ marginLeft: '20px' }}>{user.name}</span>
+              </h3>
+              {/* </Badge> */}
+            </CardRole>
           ))}
         </Flex>
       </Content>

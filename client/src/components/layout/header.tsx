@@ -5,7 +5,7 @@ import { Layout, Button, theme } from 'antd';
 const Head = Layout.Header;
 
 function Header() {
-  const { collapsed, setCollapsed } = useContext(ThemeContext);
+  // const { collapsed, setCollapsed } = useContext(ThemeContext);
   const {
     token: { colorBgContainer },
   } = theme.useToken();

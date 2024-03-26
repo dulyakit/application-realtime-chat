@@ -7,53 +7,57 @@ const URL_SERVICE = 'http://localhost:8080';
 const pubsub = new PubSub();
 
 const typeDefs = gql`
-  type NewsMessage {
+  type Message {
     text: String
-    sender: String
-    receiver: String
+    sender: Int
+    receiver: Int
+  }
+
+  type Chat {
+    data: [Message]
   }
 
   type Query {
-    placeholder: Boolean
+    getMessage(sender: Int, receiver: Int): Chat
   }
 
   type Mutation {
-    newMessage(text: String, sender: String, receiver: String): NewsMessage
+    newMessage(text: String, sender: Int, receiver: Int): Chat
   }
 
   type Subscription {
-    newsFeed: NewsMessage
+    message(sender: Int, receiver: Int): Chat
   }
 `;
 
 interface newMessageInput {
-  title: string;
-  description: string;
+  text: string;
+  sender: Number;
+  receiver: Number;
+}
+
+interface subscribeInput {
+  sender: Number, 
+  receiver: Number
 }
 
 const resolvers = {
   Query: {
-    placeholder: () => {
-      return true;
+    getMessage: async (_parent: any, args: subscribeInput) => {
+      const { data } = await axios.post(`${URL_SERVICE}/chat`, args);
+      return { data };
     },
   },
   Mutation: {
     newMessage: async (_parent: any, args: newMessageInput) => {
       const { data } = await axios.post(`${URL_SERVICE}/messages`, args);
-      console.log(data);
-
-      pubsub.publish('EVENT_CREATED', { newsFeed: data });
-
-      // Save news events to a database: you can do that here!
-
-      // Create something : EVENT_CREATED
-      // Subscribe to something: EVENT_CREATED
-      return args;
+      pubsub.publish(`EVENT_USER_${args.sender}_TO_${args.receiver}`, { message: { data } });
+      return { data };
     },
   },
   Subscription: {
-    newsFeed: {
-      subscribe: () => pubsub.asyncIterator(['EVENT_CREATED']),
+    message: {
+      subscribe: (_parent: any, args: subscribeInput) => pubsub.asyncIterator([`EVENT_USER_${args.sender}_TO_${args.receiver}`]),
     },
   },
 };
