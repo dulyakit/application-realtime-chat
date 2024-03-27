@@ -242,7 +242,7 @@
   margin: 24px 16px;
   padding: 40px;
   min-height: 70vh;
-  max-width: 40%
+  max-width: 50%
 }
 
 .boxMessage {
@@ -255,15 +255,19 @@
 }
 
 .contentMessageSend {
-  padding-top: 10px;
+  padding-top: 15px;
+  padding-right: 15px;
   width: 100%;
   text-align: right;
+  background-color: rgb(255, 247, 247);
 }
 
 .contentMessageReceiver {
-  padding-top: 10px;
+  padding-top: 15px;
+  padding-left: 15px;
   width: 100%;
   text-align: left;
+  background-color: beige;
 }
 
 .contentNotChoose {

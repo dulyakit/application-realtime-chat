@@ -1,7 +1,7 @@
 {
-  "main": "server.ts",
+  "main": "src/server.ts",
   "scripts": {
-    "start": "nodemon server.ts"
+    "dev": "nodemon src/server.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.1.1",
