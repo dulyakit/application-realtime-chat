@@ -1,36 +1,31 @@
-'use client';
-import React, { useEffect, useState, useCallback } from 'react';
-import {
-  useMutation,
-  useLazyQuery,
-  gql,
-  useSubscription,
-} from '@apollo/client';
-import { Layout, Col, Row, Cascader, Input, Segmented, Tooltip } from 'antd';
-import userData from '@/constants/userData.json';
-import styles from '@/styles/Home.module.css';
+'use client'
+import React, { useEffect, useState, useCallback } from 'react'
+import { useMutation, useLazyQuery, gql, useSubscription } from '@apollo/client'
+import { Layout, Col, Row, Cascader, Input, Segmented, Tooltip } from 'antd'
+import userData from '@/constants/userData.json'
+import styles from '@/styles/Home.module.css'
 
-const { Content } = Layout;
+const { Content } = Layout
 
 interface Props {
-  params: Params;
+  params: Params
 }
 
 interface Params {
-  userID: string;
+  userID: string
 }
 
 interface Option {
-  value: number;
-  label: string;
-  children?: Option[];
+  value: number
+  label: string
+  children?: Option[]
 }
 
 interface Message {
-  text: string;
-  sender: Number;
-  receiver: Number;
-  createdAt: string;
+  text: string
+  sender: Number
+  receiver: Number
+  createdAt: string
 }
 
 const Get_Message = gql`
@@ -43,7 +38,7 @@ const Get_Message = gql`
       }
     }
   }
-`;
+`
 
 const GET_REALTIME_MESSAGE = gql`
   subscription ($sender: Int!, $receiver: Int!) {
@@ -55,7 +50,7 @@ const GET_REALTIME_MESSAGE = gql`
       }
     }
   }
-`;
+`
 
 const CREATE_MESSAGE = gql`
   mutation ($text: String!, $sender: Int!, $receiver: Int!) {
@@ -67,30 +62,30 @@ const CREATE_MESSAGE = gql`
       }
     }
   }
-`;
+`
 
 const Chat: React.FC<Props> = ({ params }) => {
-  const userRole = userData.find((e) => e.id === parseInt(params?.userID));
-  const userOption = userData.filter((e) => e.id !== userRole?.id);
+  const userRole = userData.find((e) => e.id === parseInt(params?.userID))
+  const userOption = userData.filter((e) => e.id !== userRole?.id)
 
-  const [receiver, setReceiver] = useState(0);
-  const [message, setMessage] = useState([]);
-  const [inputMessage, setInputMessage] = useState('');
+  const [receiver, setReceiver] = useState(0)
+  const [message, setMessage] = useState([])
+  const [inputMessage, setInputMessage] = useState('')
 
   const [getMessageData, { refetch: refetchGetMessageData }] =
-    useLazyQuery(Get_Message);
+    useLazyQuery(Get_Message)
   const getRealtimeMessage = useSubscription(GET_REALTIME_MESSAGE, {
     variables: {
       sender: userRole?.id,
       receiver: receiver,
     },
-  });
-  const [createMessage] = useMutation(CREATE_MESSAGE);
+  })
+  const [createMessage] = useMutation(CREATE_MESSAGE)
 
   const options: Option[] = userOption.map((item) => ({
     label: item.name,
     value: item.id,
-  }));
+  }))
 
   const getMessage = useCallback(() => {
     getMessageData({
@@ -102,23 +97,23 @@ const Chat: React.FC<Props> = ({ params }) => {
       notifyOnNetworkStatusChange: true,
     })
       .then((res) => {
-        const result = res?.data?.getMessage?.data;
-        setMessage(result);
+        const result = res?.data?.getMessage?.data
+        setMessage(result)
       })
       .catch((err) => {
-        console.log('err: ', err);
-      });
-    refetchGetMessageData();
-  }, [getMessageData, userRole, receiver, setMessage, refetchGetMessageData]);
+        console.log('err: ', err)
+      })
+    refetchGetMessageData()
+  }, [getMessageData, userRole, receiver, setMessage, refetchGetMessageData])
 
   const changeReceiver = (value: (String | number)[]) => {
     if (value && value?.length !== 0) {
-      const selectedValue = parseInt(value[0] as string, 10);
-      setReceiver(selectedValue);
+      const selectedValue = parseInt(value[0] as string, 10)
+      setReceiver(selectedValue)
     } else {
-      setReceiver(0);
+      setReceiver(0)
     }
-  };
+  }
 
   const createNewMessage = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (receiver !== 0 && event.key === 'Enter' && inputMessage !== '') {
@@ -130,26 +125,26 @@ const Chat: React.FC<Props> = ({ params }) => {
         },
       })
         .then((res) => {
-          setInputMessage('');
+          setInputMessage('')
         })
         .catch((err) => {
-          console.log('err: ', err);
-        });
+          console.log('err: ', err)
+        })
     }
-  };
+  }
 
   useEffect(() => {
-    const message = getRealtimeMessage?.data?.getRealtimeMessage?.data;
+    const message = getRealtimeMessage?.data?.getRealtimeMessage?.data
     if (message && message.length > 0) {
-      setMessage(message);
+      setMessage(message)
     }
-  }, [getRealtimeMessage]);
+  }, [getRealtimeMessage])
 
   useEffect(() => {
     if (receiver !== 0) {
-      getMessage();
+      getMessage()
     }
-  }, [receiver, getMessage]);
+  }, [receiver, getMessage])
 
   return (
     <center>
@@ -180,7 +175,7 @@ const Chat: React.FC<Props> = ({ params }) => {
           value={inputMessage}
           onChange={(event) => setInputMessage(event.currentTarget.value)}
           onKeyDown={createNewMessage}
-          placeholder="Input Message"
+          placeholder={receiver === 0 ? '' : 'Input Message'}
           disabled={receiver === 0}
         />
         {receiver === 0 ? (
@@ -207,7 +202,7 @@ const Chat: React.FC<Props> = ({ params }) => {
         )}
       </Content>
     </center>
-  );
-};
+  )
+}
 
-export default Chat;
+export default Chat

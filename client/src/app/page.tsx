@@ -1,30 +1,30 @@
-'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
-import styled from 'styled-components';
-import { Layout, theme } from 'antd';
-import { DownloadOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Divider, Flex, Avatar, Badge, Card } from 'antd';
+'use client'
+import { useRouter, useSearchParams } from 'next/navigation'
+import styled from 'styled-components'
+import { Layout, theme } from 'antd'
+import { DownloadOutlined, UserOutlined } from '@ant-design/icons'
+import { Button, Divider, Flex, Avatar, Badge, Card } from 'antd'
 import userData from '@/constants/userData.json'
 
-const { Content } = Layout;
+const { Content } = Layout
 
 const Home = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  } = theme.useToken()
 
-  const router = useRouter();
+  const router = useRouter()
 
   const onClick = (id: Number) => {
-    router.push(`/chat/${id}`, { scroll: false });
-  };
+    router.push(`/chat/${id}`, { scroll: false })
+  }
 
   const CardRole = styled(Card)`
     &:hover {
       cursor: pointer;
       background-color: lightgray;
     }
-  `;
+  `
 
   return (
     <center>
@@ -58,7 +58,7 @@ const Home = () => {
         </Flex>
       </Content>
     </center>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

@@ -1,14 +1,14 @@
 import React, { useContext } from 'react'
-import { ThemeContext } from '@/app/themeContext';
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import { Layout, Button, theme } from 'antd';
-const Head = Layout.Header;
+import { ThemeContext } from '@/app/themeContext'
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
+import { Layout, Button, theme } from 'antd'
+const Head = Layout.Header
 
 function Header() {
   // const { collapsed, setCollapsed } = useContext(ThemeContext);
   const {
     token: { colorBgContainer },
-  } = theme.useToken();
+  } = theme.useToken()
   return (
     <Head
       style={{
@@ -27,7 +27,7 @@ function Header() {
         }}
       /> */}
     </Head>
-  );
+  )
 }
 
-export default Header;
+export default Header

@@ -1,10 +1,10 @@
-import { PubSub } from 'graphql-subscriptions';
-import gql from 'graphql-tag';
-import { makeExecutableSchema } from '@graphql-tools/schema';
-import axios from 'axios';
+import { PubSub } from 'graphql-subscriptions'
+import gql from 'graphql-tag'
+import { makeExecutableSchema } from '@graphql-tools/schema'
+import axios from 'axios'
 
-const URL_SERVICE = 'http://localhost:8080';
-const pubsub = new PubSub();
+const URL_SERVICE = 'http://localhost:8080'
+const pubsub = new PubSub()
 
 const typeDefs = gql`
   type Message {
@@ -29,44 +29,44 @@ const typeDefs = gql`
   type Subscription {
     getRealtimeMessage(sender: Int, receiver: Int): Chat
   }
-`;
+`
 
 interface newMessageInput {
-  text: string;
-  sender: Number;
-  receiver: Number;
+  text: string
+  sender: Number
+  receiver: Number
 }
 
 interface getMessageInput {
-  sender: Number;
-  receiver: Number;
+  sender: Number
+  receiver: Number
 }
 
 const resolvers = {
   Query: {
     getMessage: async (_parent: any, args: getMessageInput) => {
       try {
-        const { data } = await axios.post(`${URL_SERVICE}/chat`, args);
-        return { data };
+        const { data } = await axios.post(`${URL_SERVICE}/chat`, args)
+        return { data }
       } catch (error) {
-        console.error('Error fetching message:', error);
-        throw new Error('Failed to fetch message');
+        console.error('Error fetching message:', error)
+        throw new Error('Failed to fetch message')
       }
     },
   },
   Mutation: {
     newMessage: async (_parent: any, args: newMessageInput) => {
       try {
-        const { data } = await axios.post(`${URL_SERVICE}/messages`, args);
+        const { data } = await axios.post(`${URL_SERVICE}/messages`, args)
 
         pubsub.publish(`EVENT_USER_${args.sender}_TO_${args.receiver}`, {
           getRealtimeMessage: { data },
-        });
+        })
 
-        return { data };
+        return { data }
       } catch (error) {
-        console.error('Error creating new message:', error);
-        throw new Error('Failed to create message');
+        console.error('Error creating new message:', error)
+        throw new Error('Failed to create message')
       }
     },
   },
@@ -79,6 +79,6 @@ const resolvers = {
         ]),
     },
   },
-};
+}
 
-export default makeExecutableSchema({ typeDefs, resolvers });
+export default makeExecutableSchema({ typeDefs, resolvers })

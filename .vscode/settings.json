@@ -1,0 +1,12 @@
+{
+  "search.exclude": {
+    "**/.yarn": true,
+    "**/.pnp.*": true
+  },
+  "eslint.nodePath": ".yarn/sdks",
+  "editor.quickSuggestions": {
+    "other": "on",
+    "comments": true,
+    "strings": "off"
+  }
+}

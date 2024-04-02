@@ -1,9 +1,9 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose'
 
 export interface IMessage extends Document {
-  text: string;
-  sender: Number;
-  receiver: Number;
+  text: string
+  sender: Number
+  receiver: Number
 }
 
 export const MessageSchema: Schema = new Schema(
@@ -18,6 +18,6 @@ export const MessageSchema: Schema = new Schema(
       updatedAt: 'updatedAt',
     },
   }
-);
+)
 
-export const Message = mongoose.model<IMessage>('Message', MessageSchema);
+export const Message = mongoose.model<IMessage>('Message', MessageSchema)
