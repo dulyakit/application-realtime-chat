@@ -172,7 +172,7 @@
   font-size: 17px;
   margin-left: 10px;
 }
-.detailMovieCinema > span{
+.detailMovieCinema > span {
   font-weight: 800;
   color: #000000;
 }
@@ -194,7 +194,7 @@
   color: tomato;
 }
 
-.showTimeButtonTometo{
+.showTimeButtonTometo {
   margin: 10px;
   border-radius: 10px;
   border-color: tomato;
@@ -242,7 +242,7 @@
   margin: 24px 16px;
   padding: 40px;
   min-height: 70vh;
-  max-width: 50%
+  max-width: 60%;
 }
 
 .boxMessage {
@@ -277,7 +277,7 @@
   height: 40vh;
 }
 
-.inputText{
+.inputText {
   height: 50px;
   margin-top: 20px;
   border-radius: 20px 20px 0px 0px;
