@@ -10,6 +10,4 @@ run project:
 1. ### `cd service & yarn dev or npm run dev`
 2. ### `cd graphql & yarn dev or npm run dev`
 3. ### `cd client & yarn dev or npm run dev`
-
-
-open link: http://localhost:3000 in browser
+4. open link: http://localhost:3000 in browser
