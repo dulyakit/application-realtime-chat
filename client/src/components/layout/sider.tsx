@@ -1,16 +1,16 @@
-import React, { useContext } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { ThemeContext } from '@/app/themeContext';
-import { UserOutlined, HomeOutlined } from '@ant-design/icons';
-import { Layout, Menu } from 'antd';
-const SideBar = Layout.Sider;
+import React, { useContext } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { ThemeContext } from '@/app/themeContext'
+import { UserOutlined, HomeOutlined } from '@ant-design/icons'
+import { Layout, Menu } from 'antd'
+const SideBar = Layout.Sider
 
 const Sider = () => {
-  const router = useRouter();
-  const { collapsed } = useContext(ThemeContext);
+  const router = useRouter()
+  const { collapsed } = useContext(ThemeContext)
   const onClick = (id: Number) => {
-    router.push(`/chat/${id}`, { scroll: false });
-  };
+    router.push(`/chat/${id}`, { scroll: false })
+  }
   return (
     <SideBar trigger={null} collapsible collapsed={collapsed}>
       <Menu
@@ -39,7 +39,7 @@ const Sider = () => {
         ]}
       />
     </SideBar>
-  );
-};
+  )
+}
 
-export default Sider;
+export default Sider

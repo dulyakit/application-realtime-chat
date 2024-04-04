@@ -1,31 +1,30 @@
-'use client';
+'use client'
 
-import '@/app/globals.css';
-import React from 'react';
-import { Inter } from 'next/font/google';
-import { Layout as AntdLayout } from 'antd';
-import Sider from '@/components/layout/sider';
-import Header from '@/components/layout/header';
-import { ThemeProvider } from './themeContext';
+import '@/styles/globals.css'
+import React from 'react'
+import { ApolloProvider } from '@apollo/client/react'
+import { Inter } from 'next/font/google'
+import { Layout as AntdLayout } from 'antd'
+import Header from '@/components/layout/header'
+import client from '@/lib/initApollo'
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'] })
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <ThemeProvider>
-      <html lang="th">
-        <body className={inter.className}>
-          <AntdLayout  style={{minHeight: '100vh'}}>
-            {/* <Sider /> */}
+    <html lang="th">
+      <body className={inter.className}>
+        <ApolloProvider client={client}>
+          <AntdLayout style={{ minHeight: '100vh' }}>
             <AntdLayout>
               <Header />
               {children}
             </AntdLayout>
           </AntdLayout>
-        </body>
-      </html>
-    </ThemeProvider>
-  );
-};
+        </ApolloProvider>
+      </body>
+    </html>
+  )
+}
 
-export default Layout;
+export default Layout
