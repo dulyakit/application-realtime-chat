@@ -15,7 +15,7 @@ import schema from './schema'
   // ws Server
   const wsServer = new WebSocketServer({
     server: httpServer,
-    path: '/graphql', // localhost:3000/graphql
+    path: '/graphql', // localhost:xxx/graphql
   })
 
   const serverCleanup = useServer({ schema }, wsServer) // dispose
