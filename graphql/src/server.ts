@@ -8,6 +8,7 @@ import { expressMiddleware } from '@apollo/server/express4'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import schema from './schema'
+require('dotenv').config()
 ;(async function () {
   const app = express()
   const httpServer = createServer(app)
@@ -49,7 +50,9 @@ import schema from './schema'
   )
 
   // http server start
-  httpServer.listen(4000, () => {
-    console.log(`Server running on http://localhost:4000/graphql`)
+  httpServer.listen(process.env.NODE_PORT || 4000, () => {
+    console.log(
+      `Server running on http://localhost:${process.env.NODE_PORT}/graphql`
+    )
   })
 })()

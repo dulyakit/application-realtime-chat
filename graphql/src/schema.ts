@@ -2,8 +2,10 @@ import { PubSub } from 'graphql-subscriptions'
 import gql from 'graphql-tag'
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import axios from 'axios'
+require('dotenv').config()
 
-const URL_SERVICE = 'http://localhost:8080'
+const URL_SERVICE = process.env.CHAT_SERVICE || 'http://localhost:8080'
+
 const pubsub = new PubSub()
 
 const typeDefs = gql`
