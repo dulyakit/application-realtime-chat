@@ -1,9 +1,9 @@
 'use client'
-import { useRouter, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 import styled from 'styled-components'
 import { Layout, theme } from 'antd'
-import { DownloadOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Divider, Flex, Avatar, Badge, Card } from 'antd'
+import { UserOutlined } from '@ant-design/icons'
+import { Flex, Avatar, Badge, Card } from 'antd'
 import userData from '@/constants/userData.json'
 
 const { Content } = Layout
@@ -12,12 +12,6 @@ const Home = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken()
-
-  const router = useRouter()
-
-  const onClick = (id: Number) => {
-    router.push(`/chat/${id}`, { scroll: false })
-  }
 
   const CardRole = styled(Card)`
     &:hover {
@@ -38,21 +32,20 @@ const Home = () => {
           borderRadius: borderRadiusLG,
         }}
       >
-        <h2 style={{ marginBottom: '20px' }}>โปรดเลือก Role</h2>
+        <h2 style={{ marginBottom: '20px' }}>โปรดเลือกผู้ส่ง</h2>
         <Flex gap="small" wrap="wrap">
           {userData.map((user) => (
             <CardRole
               key={user.id}
               bordered={false}
               style={{ width: '100vw', textAlign: 'left' }}
-              onClick={() => onClick(user.id)}
             >
-              {/* <Badge count={1}> */}
-              <h3>
-                <Avatar shape="square" icon={<UserOutlined />} />
-                <span style={{ marginLeft: '20px' }}>{user.name}</span>
-              </h3>
-              {/* </Badge> */}
+              <Link href={`/chat/${user.id}`}>
+                <h3>
+                  <Avatar shape="square" icon={<UserOutlined />} />
+                  <span style={{ marginLeft: '20px' }}>{user.name}</span>
+                </h3>
+              </Link>
             </CardRole>
           ))}
         </Flex>

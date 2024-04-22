@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState, useCallback } from 'react'
 import { useMutation, useLazyQuery, gql, useSubscription } from '@apollo/client'
-import { Layout, Col, Row, Cascader, Input, Segmented, Tooltip } from 'antd'
+import { Layout, Col, Row, Cascader, Input } from 'antd'
 import userData from '@/constants/userData.json'
 import styles from '@/styles/Home.module.css'
 
@@ -154,30 +154,22 @@ const Chat: React.FC<Props> = ({ params }) => {
             <Row>
               <Col span={12}>
                 <div style={{ textAlign: 'right' }}>
-                  <span>Chat:</span>
+                  <span>ผู้รับ :</span>
                 </div>
               </Col>
               <Col span={12} style={{ textAlign: 'left', paddingLeft: '10px' }}>
                 <Cascader
                   options={options}
                   onChange={changeReceiver}
-                  placeholder="โปรดเลือกผู้รับ"
+                  placeholder="โปรดเลือก"
                 />
               </Col>
             </Row>
           </Col>
           <Col span={12}>
-            <span>Role: {userRole?.name}</span>
+            <span>ผู้ส่ง : {userRole?.name}</span>
           </Col>
         </Row>
-        <Input
-          className={styles.inputText}
-          value={inputMessage}
-          onChange={(event) => setInputMessage(event.currentTarget.value)}
-          onKeyDown={createNewMessage}
-          placeholder={receiver === 0 ? '' : 'Input Message'}
-          disabled={receiver === 0}
-        />
         {receiver === 0 ? (
           <div className={styles.boxMessage}>
             <div className={styles.contentNotChoose}>
@@ -195,11 +187,28 @@ const Chat: React.FC<Props> = ({ params }) => {
                     : styles.contentMessageReceiver
                 }
               >
-                {items.text}
+                <span
+                  className={
+                    items.sender === userRole?.id
+                      ? styles.textMessageSend
+                      : styles.textMessageReceiver
+                  }
+                >
+                  {items.text}
+                </span>
               </div>
             ))}
           </div>
         )}
+
+        <Input
+          className={styles.inputText}
+          value={inputMessage}
+          onChange={(event) => setInputMessage(event.currentTarget.value)}
+          onKeyDown={createNewMessage}
+          placeholder={receiver === 0 ? '' : 'Input Message'}
+          disabled={receiver === 0}
+        />
       </Content>
     </center>
   )
