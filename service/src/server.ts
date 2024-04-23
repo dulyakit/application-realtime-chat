@@ -30,5 +30,5 @@ app.post('/messages', createMessage)
 app.post('/chat', getChat)
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
+  console.log(`Server running on http://localhost:${PORT}/graphql`)
 })

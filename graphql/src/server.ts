@@ -9,6 +9,9 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import schema from './schema'
 require('dotenv').config()
+
+const PORT = process.env.PORT || 4000
+
 ;(async function () {
   const app = express()
   const httpServer = createServer(app)
@@ -50,9 +53,7 @@ require('dotenv').config()
   )
 
   // http server start
-  httpServer.listen(process.env.NODE_PORT || 4000, () => {
-    console.log(
-      `Server running on http://localhost:${process.env.NODE_PORT}/graphql`
-    )
+  httpServer.listen(PORT || 4000, () => {
+    console.log(`Server running on http://localhost:${PORT}/graphql`)
   })
 })()
