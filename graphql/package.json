@@ -1,4 +1,6 @@
 {
+  "name": "application-chat_graphql",
+  "author": "Dulyakit P. <dulyakit.ph@gmail.com>",
   "main": "src/server.ts",
   "scripts": {
     "dev": "nodemon src/server.ts"

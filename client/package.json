@@ -1,5 +1,6 @@
 {
-  "name": "client2",
+  "name": "application-chat_client",
+  "author": "Dulyakit P. <dulyakit.ph@gmail.com>",
   "version": "0.1.0",
   "private": true,
   "scripts": {
