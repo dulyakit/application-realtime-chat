@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app-container
+        image: dulyakit2542/my-k8s-app:latest  # เปลี่ยนเป็น image ของคุณ
+        ports:
+        - containerPort: 4000  # Port ภายใน container
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-service
+spec:
+  selector:
+    app: my-app  # ต้องตรงกับ matchLabels ใน Deployment
+  ports:
+    - protocol: TCP
+      port: 4000       # Port ที่ Service expose (ภายนอก)
+      targetPort: 4000  # Port ของ container (ภายใน)
+  type: LoadBalancer
+
+
+# docker login
+# docker build -t dulyakit2542/my-k8s-app:latest .
+# docker push dulyakit2542/my-k8s-app:latest
+
+# kubectl apply -f deployment.yaml
+
+# kubectl get pods
+# kubectl get services

@@ -10,12 +10,12 @@ import { createClient } from 'graphql-ws'
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: 'ws://localhost:4000/graphql',
+    url: 'ws://192.168.0.15/graphql',
   })
 )
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: 'http://192.168.0.15/graphql',
   credentials: 'same-origin',
 })
 
