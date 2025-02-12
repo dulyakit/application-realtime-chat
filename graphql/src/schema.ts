@@ -1,12 +1,29 @@
-import { PubSub } from 'graphql-subscriptions'
 import gql from 'graphql-tag'
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import axios from 'axios'
+import { RedisPubSub } from 'graphql-redis-subscriptions' // Import RedisPubSub
+import Redis from 'ioredis'
 require('dotenv').config()
 
-const URL_SERVICE = process.env.CHAT_SERVICE || 'http://localhost:8080'
+const URL_SERVICE = process.env.CHAT_SERVICE || 'http://192.168.0.15:8082'
 
-const pubsub = new PubSub()
+// --- Redis Configuration ---
+const redisOptions = {
+  host: process.env.REDIS_HOST || 'localhost',
+  port: parseInt(process.env.REDIS_PORT || '6379'),
+  password: process.env.REDIS_PASSWORD || undefined,
+  retryStrategy: (times: number) => {
+    return Math.min(times * 50, 2000)
+  },
+}
+
+const pubsub = new RedisPubSub({
+  // Use RedisPubSub
+  publisher: new Redis(redisOptions),
+  subscriber: new Redis(redisOptions),
+})
+
+// --- End Redis Configuration ---
 
 const typeDefs = gql`
   type Message {
@@ -74,11 +91,12 @@ const resolvers = {
   },
   Subscription: {
     getRealtimeMessage: {
-      subscribe: async (_parent: any, args: getMessageInput) =>
-        pubsub.asyncIterator([
+      subscribe: async (_parent: any, args: getMessageInput) => {
+        return pubsub.asyncIterator([
           `EVENT_USER_${args.sender}_TO_${args.receiver}`,
           `EVENT_USER_${args.receiver}_TO_${args.sender}`,
-        ]),
+        ])
+      },
     },
   },
 }

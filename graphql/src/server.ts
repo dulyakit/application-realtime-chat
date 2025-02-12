@@ -3,12 +3,12 @@ import { createServer } from 'http'
 import { WebSocketServer } from 'ws'
 import { useServer } from 'graphql-ws/lib/use/ws'
 import { ApolloServer } from '@apollo/server'
-import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer' // Import
 import { expressMiddleware } from '@apollo/server/express4'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import schema from './schema'
-require('dotenv').config()
+import 'dotenv/config' // Use this instead of require('dotenv').config()
 
 const PORT = process.env.PORT || 4000
 
@@ -16,19 +16,22 @@ const PORT = process.env.PORT || 4000
   const app = express()
   const httpServer = createServer(app)
 
-  // ws Server
   const wsServer = new WebSocketServer({
     server: httpServer,
-    path: '/graphql', // localhost:xxx/graphql
+    path: '/graphql',
   })
 
-  const serverCleanup = useServer({ schema }, wsServer) // dispose
+  const serverCleanup = useServer(
+    {
+      schema,
+    },
+    wsServer
+  )
 
-  // apollo server
   const server = new ApolloServer({
     schema,
     plugins: [
-      ApolloServerPluginDrainHttpServer({ httpServer }),
+      ApolloServerPluginDrainHttpServer({ httpServer }), // Add plugin
       {
         async serverWillStart() {
           return {
@@ -41,19 +44,51 @@ const PORT = process.env.PORT || 4000
     ],
   })
 
-  // start our server
   await server.start()
 
-  // apply middlewares (cors, expressmiddlewares)
   app.use(
     '/graphql',
-    cors<cors.CorsRequest>(),
+    cors<cors.CorsRequest>({
+      origin: ['http://192.168.0.15:3000', 'http://localhost:3000'], // ระบุ origin ที่อนุญาติทั้งหมด
+      credentials: true,
+    }),
     bodyParser.json(),
     expressMiddleware(server)
   )
 
-  // http server start
-  httpServer.listen(PORT || 4000, () => {
-    console.log(`Server running on http://localhost:${PORT}/graphql`)
+  httpServer.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}/graphql`)
+    console.log(`Subscriptions ready at ws://localhost:${PORT}/graphql`) // Add this line
   })
+
+  wsServer.on('connection', (ws) => {
+    console.log('Client connected to WebSocket')
+
+    ws.on('close', () => {
+      console.log('Client disconnected from WebSocket')
+    })
+
+    ws.on('error', (error) => {
+      console.error('WebSocket error:', error)
+    })
+  })
+
+  app.use('/graphql', (req, res, next) => {
+    console.log(`HTTP request: ${req.method} ${req.originalUrl}`)
+    console.log('Request body:', req.body) // Log request body
+    next()
+  })
+
+  // Error handling middleware
+  app.use(
+    (
+      err: any,
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) => {
+      console.error(err.stack)
+      res.status(500).send('Something broke!')
+    }
+  )
 })()

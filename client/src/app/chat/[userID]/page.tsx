@@ -82,7 +82,7 @@ const Chat: React.FC<Props> = ({ params }) => {
   })
   const [createMessage] = useMutation(CREATE_MESSAGE)
 
-  const options: Option[] = userOption.map((item) => ({
+  const options: Option[] = userOption.map((item: any) => ({
     label: item.name,
     value: item.id,
   }))
@@ -96,11 +96,11 @@ const Chat: React.FC<Props> = ({ params }) => {
       fetchPolicy: 'network-only',
       notifyOnNetworkStatusChange: true,
     })
-      .then((res) => {
+      .then((res: any) => {
         const result = res?.data?.getMessage?.data
         setMessage(result)
       })
-      .catch((err) => {
+      .catch((err: any) => {
         console.log('err: ', err)
       })
     refetchGetMessageData()
@@ -124,10 +124,10 @@ const Chat: React.FC<Props> = ({ params }) => {
           receiver: receiver,
         },
       })
-        .then((res) => {
+        .then((res: any) => {
           setInputMessage('')
         })
-        .catch((err) => {
+        .catch((err: any) => {
           console.log('err: ', err)
         })
     }
