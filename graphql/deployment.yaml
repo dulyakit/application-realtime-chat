@@ -15,6 +15,7 @@ spec:
       containers:
       - name: my-app-container
         image: dulyakit2542/my-k8s-app:latest  # เปลี่ยนเป็น image ของคุณ
+        imagePullPolicy: Never
         ports:
         - containerPort: 4000  # Port ภายใน container
         resources:
