@@ -17,7 +17,7 @@ spec:
         image: dulyakit2542/my-k8s-app:latest  # เปลี่ยนเป็น image ของคุณ
         imagePullPolicy: Never
         ports:
-        - containerPort: 4000  # Port ภายใน container
+        - containerPort: 4001  # Port ภายใน container
         resources:
           requests:
             cpu: "100m"
@@ -36,7 +36,7 @@ spec:
   ports:
     - protocol: TCP
       port: 4000       # Port ที่ Service expose (ภายนอก)
-      targetPort: 4000  # Port ของ container (ภายใน)
+      targetPort: 4001  # Port ของ container (ภายใน)
   type: LoadBalancer
 
 
