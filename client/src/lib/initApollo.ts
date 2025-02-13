@@ -13,14 +13,8 @@ const wsLink = new GraphQLWsLink(
     url: 'ws://192.168.0.15:4000/graphql',
     retryAttempts: 10, // จำนวนครั้งที่ต้องการให้ reconnect
     retryWait: (retryCount) => {
-      // ระยะเวลาที่จะรอก่อน reconnect (ใน milliseconds)
       return new Promise((resolve) => setTimeout(resolve, 1000 * retryCount))
     },
-    onError: (error) => {
-      if (retryCount >= 5) {
-        alert("Connection lost. Please refresh the page.");
-      }
-    }
   })
 )
 
