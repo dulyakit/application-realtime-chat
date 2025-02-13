@@ -10,7 +10,7 @@ import bodyParser from 'body-parser'
 import schema from './schema'
 import 'dotenv/config' // Use this instead of require('dotenv').config()
 
-const PORT = process.env.PORT || 4000
+const PORT = process.env.PORT || 4001
 
 ;(async function () {
   const app = express()
