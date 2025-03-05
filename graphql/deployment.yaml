@@ -39,7 +39,20 @@ spec:
       targetPort: 4001  # Port ของ container (ภายใน)
   type: LoadBalancer
 
-
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apollo-server-config
+data:
+  APP_ENV: "local"
+  NODE_ENV: "development"
+  NODE_PORT: "4000"
+  CHAT_SERVICE: "http://192.168.0.15:8082"
+  REDIS_HOST: ""
+  REDIS_PORT: "17185"
+  REDIS_PASSWORD: ""
+  
 # docker login
 # docker build -t dulyakit2542/my-k8s-app:latest .
 # docker push dulyakit2542/my-k8s-app:latest
