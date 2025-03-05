@@ -3,12 +3,11 @@ import { createServer } from 'http'
 import { WebSocketServer } from 'ws'
 import { useServer } from 'graphql-ws/lib/use/ws'
 import { ApolloServer } from '@apollo/server'
-import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer' // Import
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import { expressMiddleware } from '@apollo/server/express4'
-import cors from 'cors'
 import bodyParser from 'body-parser'
 import schema from './schema'
-import 'dotenv/config' // Use this instead of require('dotenv').config()
+import 'dotenv/config'
 
 const PORT = process.env.PORT || 4001
 
@@ -31,7 +30,7 @@ const PORT = process.env.PORT || 4001
   const server = new ApolloServer({
     schema,
     plugins: [
-      ApolloServerPluginDrainHttpServer({ httpServer }), // Add plugin
+      ApolloServerPluginDrainHttpServer({ httpServer }),
       {
         async serverWillStart() {
           return {
@@ -48,17 +47,13 @@ const PORT = process.env.PORT || 4001
 
   app.use(
     '/graphql',
-    cors<cors.CorsRequest>({
-      origin: ['http://192.168.0.15:3000', 'http://localhost:3000'], // ระบุ origin ที่อนุญาติทั้งหมด
-      credentials: true,
-    }),
     bodyParser.json(),
     expressMiddleware(server)
   )
 
   httpServer.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}/graphql`)
-    console.log(`Subscriptions ready at ws://localhost:${PORT}/graphql`) // Add this line
+    console.log(`Subscriptions ready at ws://localhost:${PORT}/graphql`)
   })
 
   wsServer.on('connection', (ws) => {

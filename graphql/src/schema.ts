@@ -1,11 +1,11 @@
 import gql from 'graphql-tag'
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import axios from 'axios'
-import { RedisPubSub } from 'graphql-redis-subscriptions' // Import RedisPubSub
+import { RedisPubSub } from 'graphql-redis-subscriptions'
 import Redis from 'ioredis'
 require('dotenv').config()
 
-const URL_SERVICE = process.env.CHAT_SERVICE || 'http://192.168.0.15:8082'
+const URL_SERVICE = process.env.CHAT_SERVICE || 'http://localhost:8080'
 
 // --- Redis Configuration ---
 const redisOptions = {

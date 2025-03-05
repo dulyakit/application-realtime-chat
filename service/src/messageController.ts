@@ -37,6 +37,8 @@ export async function createMessage(
       ],
     }).sort({ createdAt: 'desc' })
 
+    console.log('=========messages=========')
+    console.log(messages)
     res.status(201).json(messages)
   } catch (error) {
     next(error)

@@ -7,13 +7,15 @@ import {
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { createClient } from 'graphql-ws'
+import 'dotenv/config'
+
+const API_GATEWAY = process.env.API_GATEWAY || 'http://localhost:4000'
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: 'ws://192.168.0.15:4000/graphql',
-    retryAttempts: 10, // จำนวนครั้งที่ต้องการให้ reconnect
+    url: `ws://${API_GATEWAY}/graphql`,
+    retryAttempts: 10,
     retryWait: (retryCount) => {
-      // ระยะเวลาที่จะรอก่อน reconnect (ใน milliseconds)
       return new Promise((resolve) => setTimeout(resolve, 1000 * retryCount))
     },
     onError: (error) => {
@@ -25,7 +27,7 @@ const wsLink = new GraphQLWsLink(
 )
 
 const httpLink = createHttpLink({
-  uri: 'http://192.168.0.15:4000/graphql',
+  uri: `http://${API_GATEWAY}/graphql`,
   credentials: 'same-origin',
 })
 
